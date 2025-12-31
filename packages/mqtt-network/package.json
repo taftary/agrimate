@@ -1,0 +1,20 @@
+{
+  "name": "mqtt-network",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "ts-node": "ts-node"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "mqtt": "^5.14.1",
+    "typescript": "^5.6.3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.1"
+}

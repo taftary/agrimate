@@ -1,0 +1,44 @@
+const { Main } = require("./dist/main");
+const { Nodes } = require("./dist/nodes");
+const { startDashboard } = require("./dist/screen");
+const { checkLogsHistory, logError, logInfo, logWarn } = require("./dist/screen/logger");
+const { RuleState } = require("./dist/states");
+let main;
+async function run() {
+  const from = new Date();
+  const to = new Date();
+  to.setDate(to.getDate() + 1);
+  to.setHours(0, 0, 0, 0);
+
+  const nodes = new Nodes();
+  logInfo("Fetching...");
+
+  try {
+    await nodes.fetch(from, to);
+
+     main = new Main(nodes);
+
+    // TODO: RESET DB DATA and pin and rules data in classes
+    await main.process();
+  } catch (error) {
+    logError(error.toString());
+  }
+}
+
+await run();
+
+const node_2 = main.nodes.nodes.get(2);
+const node_1 = main.nodes.nodes.get(1);
+const pin_2 = node_1.pins.get(2);
+const pin_3 = node_2.pins.get(3);
+const rule_1 = pin_3.rules.rules.get(1);
+
+pin_2.state;
+
+pin_3.on();
+rule_1.activate();
+pin_2.state;
+
+pin_3.off();
+rule_1.deactivate();
+pin_2.state;

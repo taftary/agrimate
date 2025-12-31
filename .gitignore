@@ -1,0 +1,63 @@
+# -------------------------
+# Node / pnpm
+# -------------------------
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# pnpm workspaces
+**/node_modules/
+**/.turbo/
+**/.nx/
+
+# -------------------------
+# Build outputs
+# -------------------------
+**/dist/
+**/build/
+**/out/
+**/coverage/
+*.tsbuildinfo
+
+# Common framework outputs
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+.vitepress/
+.storybook/
+storybook-static/
+
+# -------------------------
+# Environment files
+# -------------------------
+.env
+.env.*
+!.env.example
+
+# -------------------------
+# Editor / OS files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains
+.idea/
+
+# -------------------------
+# Misc
+# -------------------------
+*.log
+*.tmp
+*.temp

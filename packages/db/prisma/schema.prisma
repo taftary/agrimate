@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --------------------
+// ENUMS
+// --------------------
+enum NodeState {
+  CONNECTED
+  DISCONNECTED
+}
+
+enum PinState {
+  ON
+  OFF
+}
+
+enum PlanState {
+  DRAFT
+  SCHEDUAL
+  ACTIVE
+  STOPPED
+  PAUSED
+  DONE
+}
+
+enum RuleState {
+  ACTIVE
+  INACTIVE
+}
+
+// --------------------
+// MODELS
+// --------------------
+
+model Node {
+  id    Int       @id @unique @default(autoincrement())
+  name  String
+  state NodeState @default(DISCONNECTED)
+  pins  Pin[]
+}
+
+model Pin {
+  id           Int      @id @unique @default(autoincrement())
+  state        PinState
+  name         String?
+  nodeId       Int
+  node         Node     @relation(fields: [nodeId], references: [id])
+  hasRule      Boolean  @default(false)
+  plans        Plan[]   @relation("PlanPins")
+  rules        Rule[]   @relation("RulesPin")
+  toOpenRules  Rule[]   @relation("RulesToOpenPins")
+  toCloseRules Rule[]   @relation("RulesToClosePins")
+}
+
+model Rule {
+  id          Int       @id @unique @default(autoincrement())
+  name        String
+  state       RuleState
+  priority    Int
+  pinId       Int
+  pin         Pin       @relation(fields: [pinId], references: [id], name: "RulesPin")
+  toClosePins Pin[]     @relation("RulesToClosePins")
+  toOpenPins  Pin[]     @relation("RulesToOpenPins")
+}
+
+model Plan {
+  id    Int       @id @unique @default(autoincrement())
+  name  String
+  state PlanState @default(SCHEDUAL)
+
+  pinId Int
+  pin   Pin @relation(fields: [pinId], references: [id], name: "PlanPins")
+
+  startDate DateTime?
+  endDate   DateTime?
+
+  stoppedAt DateTime?
+  pausedAt  DateTime?
+
+  toResume Boolean @default(false)
+  toExtend Boolean @default(false)
+}
+
+// --------------------
+// RELATION TABLES
+// --------------------
