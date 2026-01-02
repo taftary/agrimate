@@ -3,6 +3,7 @@ import { NodeState } from "../../states";
 import { Pin } from "./pin";
 import mapPin from "./pin/map";
 import { logInfo } from "../../screen/logger";
+import { publishToTopic, Topics } from "mqtt-network";
 
 export interface NodeOptions {
   id: number;

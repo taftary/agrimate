@@ -18,3 +18,6 @@ export async function updatePlan(
 export async function createPlan(data: PlanCreateInput) {
   return await client.plan.create({ data });
 }
+export async function getPlanById(id: number) {
+  return await client.plan.findUnique({ where: { id } });
+}

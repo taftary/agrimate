@@ -1,4 +1,6 @@
+import { publishToTopic, Topics } from "mqtt-network";
 import { Nodes } from "./nodes";
+import { NodeState, PlanState, RuleState } from "./states";
 
 export class Main {
   public readonly nodes: Nodes;
@@ -18,6 +20,27 @@ export class Main {
     const delay = nextDay.getTime() - now.getTime();
     this.timer = setTimeout(() => this.process(), delay);
   }
-
-  
+  async rest() {
+    for (const node of this.nodes.list()) {
+      for (const pin of node.getPins()) {
+        for (const plan of pin.plans.list()) {
+          if (plan.state === PlanState.ACTIVE) {
+            if (plan.toResume) {
+              await plan.pause(pin);
+            } else {
+              await plan.stop(pin);
+            }
+          }
+        }
+        for (const rule of pin.rules.list()) {
+          if (rule.state === RuleState.ACTIVE) {
+            await rule.deactivate();
+          }
+        }
+        await pin.off();
+      }
+      await node.disconnect();
+      publishToTopic(`${Topics.core}/${node.name}`, "reset");
+    }
+  }
 }

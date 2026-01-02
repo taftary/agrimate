@@ -28,3 +28,7 @@ export async function createRule(data: RuleCreateInput) {
     },
   });
 }
+
+export async function getRuleById(id: number) {
+  return await client.rule.findUnique({ where: { id } });
+}

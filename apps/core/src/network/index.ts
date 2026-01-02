@@ -12,9 +12,6 @@ import { logInfo } from "../screen/logger";
 import { userHandlers } from "./handlers/user";
 
 export async function startNetwork(main: Main) {
-  await connectToBroker({
-    clientId: "core",
-  });
   const nodeMessageHandlers = nodeHandlers(main);
   const userMessageHandlers = userHandlers(main);
   subscribeToTopic(`${Topics.node}/#`, (topic) => {

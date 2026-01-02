@@ -29,9 +29,12 @@ nodes
       startDashboard(main);
       checkLogsHistory();
       logInfo("Start");
-      // TODO: RESET DB DATA and pin and rules data in classes all pins should be OFF and all rules should be inactive
-      await main.process();
+      await connectToBroker({
+        clientId: "core",
+      });
       await startNetwork(main);
+      await main.rest();
+      await main.process();
     } catch (error) {
       logError(error as string);
     }

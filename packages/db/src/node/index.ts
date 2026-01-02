@@ -26,6 +26,13 @@ export async function getNodes(from: Date, to: Date) {
   });
 }
 
+export async function getNodeById(id: number) {
+  return await client.node.findFirst({
+    where: { id },
+    include: { pins: true },
+  });
+}
+
 export async function getOrCreateNodeByName(name: string) {
   const existingNode = await client.node.findFirst({
     where: { name },

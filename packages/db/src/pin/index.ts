@@ -11,6 +11,13 @@ export async function getOrCreatePinByName(name: string, nodeId: number) {
   }
 }
 
+export async function getPinById(id: number) {
+  return await client.pin.findFirst({
+    where: { id },
+    include: { plans: true, rules: true },
+  });
+}
+
 export async function updatePin(
   where: PinWhereUniqueInput,
   data: Partial<Pin>
@@ -19,4 +26,11 @@ export async function updatePin(
     where,
     data,
   });
+}
+
+export async function getPinPlans(pinId: number) {
+  return await client.plan.findMany({ where: { pinId } });
+}
+export async function getPinRules(pinId: number) {
+  return await client.rule.findMany({ where: { pinId } });
 }
